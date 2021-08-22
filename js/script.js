@@ -61,6 +61,54 @@ class Todo {
     return Math.random().toString(2, 15) + Math.random().toString(36).substring(2, 15);
   }
 
+  deleteItem(e) {
+    const target = e.target;
+    // console.log('target: ', target);
+    const todoItem = target.closest('.todo-item');
+    // console.log('todoItem: ', todoItem);
+    if (target.closest('.todo-remove')) {
+      this.todoData.forEach(item => {
+        if (item.key === todoItem.key) {
+          this.todoData.delete(item.key);
+        }
+      });
+
+      this.render();
+    }
+  }
+
+  completedItem(e) {
+    const target = e.target;
+    // console.log('target: ', target);
+    const todoItem = target.closest('.todo-item');
+    // console.log('todoItem: ', todoItem);
+    if (target.closest('.todo-complete') && (target.closest('.todo-completed'))) {
+      this.todoLlist.append(todoItem);
+
+      this.todoData.forEach(item => {
+        if (item.key === todoItem.key) {
+          item.completed = false;
+        }
+      });
+    } else if (target.closest('.todo-complete') && (target.closest('.todo-list'))) {
+      this.todoCompleted.append(todoItem);
+
+      this.todoData.forEach(item => {
+        if (item.key === todoItem.key) {
+          item.completed = true;
+        }
+      });
+    }
+
+    this.render();
+  }
+
+  handler() {
+    const todoContainer = document.querySelector('.todo-container');
+    todoContainer.addEventListener('click', this.completedItem.bind(this));
+    todoContainer.addEventListener('click', this.deleteItem.bind(this));
+  }
+
   init() {
     this.form.addEventListener('submit', this.addTodo.bind(this));
     this.render();
@@ -71,3 +119,5 @@ class Todo {
 const todo = new Todo('.todo-control', '.header-input', '.todo-list', '.todo-completed');
 
 todo.init();
+
+todo.handler();
