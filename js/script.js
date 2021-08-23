@@ -23,6 +23,7 @@ class Todo {
     this.todoCompleted.textContent = '';
     this.todoData.forEach(this.createItem, this);
     this.addToStorage();
+    // this.input = '';
   }
 
   createItem(todo) {
@@ -55,6 +56,7 @@ class Todo {
       this.todoData.set(newTodo.key, newTodo);
       this.render();
     }
+    this.input.value = '';
   }
 
   generateKey() {
